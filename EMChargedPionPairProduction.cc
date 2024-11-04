@@ -171,16 +171,20 @@ void EMChargedPionPairProduction::performInteraction(Candidate *candidate) const
     if (not std::isfinite(EpiP) || not std::isfinite(EpiM))
         return;
 
+    // create a random number + or - 1 to randomly select the leading particle
+    Random randInt;
+    int randIntPM = (randInt.randUniform(0, 1) < 0.5) ? -1 : 1;
+    
     // sample random position along current step
     Vector3d pos = random.randomInterpolatedPosition(candidate->previous.getPosition(), candidate->current.getPosition());
     // apply sampling
     if (random.rand() < pow(inelasticity, thinning)) {
         double w = 1. / pow(inelasticity, thinning);
-        candidate->addSecondary(211, EpiP / (1 + z), pos, w, interactionTag); // positively charged pion
+        candidate->addSecondary(randIntPM * 211, EpiP / (1 + z), pos, w, interactionTag); // positively charged pion
     }
     if (random.rand() < pow(1 - inelasticity, thinning)){
         double w = 1. / pow(1 - inelasticity, thinning);
-        candidate->addSecondary(-211, EpiM / (1 + z), pos, w, interactionTag);
+        candidate->addSecondary(randIntPM * -211, EpiM / (1 + z), pos, w, interactionTag);
     }
 }
 
