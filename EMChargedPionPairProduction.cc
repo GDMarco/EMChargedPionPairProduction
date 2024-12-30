@@ -132,9 +132,6 @@ void EMChargedPionPairProduction::initInelasticity(std::string filename) {
     }
     infile.close();
 }
-
-// maybe to rewrite according to the inelasticity...
-// class PPSecondariesEnergyDistribution
    
 void EMChargedPionPairProduction::performInteraction(Candidate *candidate) const {
     // scale particle energy instead of background photon energy
@@ -172,8 +169,7 @@ void EMChargedPionPairProduction::performInteraction(Candidate *candidate) const
         return;
 
     // create a random number + or - 1 to randomly select the leading particle
-    Random randInt;
-    int randIntPM = (randInt.randUniform(0, 1) < 0.5) ? -1 : 1;
+    int randIntPM = (random.randUniform(0, 1) < 0.5) ? -1 : 1;
     
     // sample random position along current step
     Vector3d pos = random.randomInterpolatedPosition(candidate->previous.getPosition(), candidate->current.getPosition());
